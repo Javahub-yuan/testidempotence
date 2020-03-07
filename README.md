@@ -15,7 +15,7 @@
 
 ### Jmeter压力检测问题
 
-![Jmeter3.png](images/Jmeter3.png)
+![Jmeter3.png](/images/Jmeter3.png)
 
 ![Jmeter1.png](images/Jmeter1.png)
 
