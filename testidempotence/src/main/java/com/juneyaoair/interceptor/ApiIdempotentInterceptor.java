@@ -35,6 +35,7 @@ public class ApiIdempotentInterceptor implements HandlerInterceptor {
                 String checkToken = tokenService.checkToken(parameter);
                 if (!"success".equalsIgnoreCase(checkToken)) {
                     throw new RuntimeException("已处理，请"+checkToken+"秒后重试");
+//                    return false;
                 }
             } else {
                     throw new RuntimeException("token不能为空");

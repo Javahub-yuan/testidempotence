@@ -13,9 +13,9 @@ public class JedisUtil {
 
     static {
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(20);//最大连接数
-        config.setMaxIdle(5);//最大空闲等待时间
-        config.setMaxWaitMillis(3000);//最大等待时间
+        config.setMaxTotal(200);//最大连接数
+        config.setMaxIdle(100);//最大空闲等待时间
+        config.setMaxWaitMillis(10000);//最大等待时间
 
         jedisPool = new JedisPool(config,"192.168.136.141",6379);
     }
@@ -23,6 +23,17 @@ public class JedisUtil {
     //从连接池获取Jedis对象
     public static Jedis getJedis(){
         return jedisPool.getResource();
+    }
+
+    /**
+     * 并不是关闭连接，而是放回连接池，否则会报
+     * redis.clients.jedis.exceptions.JedisException: Could not get a resource from the pool
+     * @param jedis
+     */
+    private static void close(Jedis jedis){
+        if (null != jedis) {
+            jedis.close();
+        }
     }
 
 
@@ -40,6 +51,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("set key:{} value:{} error", key, value, e);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -58,6 +71,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("set key:{} value:{} expireTime:{} error",key,value,expireTime);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -74,6 +89,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("get key:{} error",key);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -90,6 +107,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("del key:{} error",key);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -107,6 +126,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("exists key:{} error", key, e);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -125,6 +146,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("expire key:{} error", key, e);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 
@@ -142,6 +165,8 @@ public class JedisUtil {
         } catch (Exception e) {
             logger.error("ttl key:{} error", key, e);
             return null;
+        } finally {
+            close(jedis);
         }
     }
 

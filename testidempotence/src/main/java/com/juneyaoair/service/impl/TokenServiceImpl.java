@@ -16,7 +16,7 @@ public class TokenServiceImpl implements TokenService {
         Long ttl = null;
         logger.info("执行TokenServiceImpl中的checkToken方法，id={}",id);
         if (!JedisUtil.exists(id)) {
-            JedisUtil.set(id,"唯一标识",10);
+            JedisUtil.set(id,"唯一标识",3);
                 return "success";
         } else {
             ttl = JedisUtil.ttl(id);
